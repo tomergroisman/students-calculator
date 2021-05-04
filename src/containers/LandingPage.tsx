@@ -1,14 +1,22 @@
-import React, { Component } from 'react'
-import Footer from '../components/Footer'
-import GradesWidget from '../components/GradesWidget'
-import Header from '../components/Header'
-import TextInput from '../components/TextInput'
+import React, { Component } from 'react';
+import Footer from '../components/Footer';
+import GradesWidget from '../components/GradesWidget';
+import Header from '../components/Header';
+import TextInput from '../components/TextInput';
 
-export default class LandingPage extends Component {
+interface State {
+  name: string,
+}
+
+export default class LandingPage extends Component<{}, State> {
+  state = {
+    name: ""
+  }
+
   render() {
     return (
       <div className="container">
-        <Header />
+        <Header name={this.state.name}/>
         <TextInput />
         <TextInput />
         <GradesWidget />
