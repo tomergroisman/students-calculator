@@ -24,7 +24,7 @@ export default class LandingPage extends Component<{}, State> {
   gradesInputRef?: HTMLInputElement;
 
   // Name change handler
-  handleNameChange = (name: string) => {
+  updateName = (name: string) => {
     this.setState({ name });
   }
 
@@ -35,7 +35,7 @@ export default class LandingPage extends Component<{}, State> {
   }
 
   // Set the grade highlights relative to the current grade state
-  setHighlights = () => {
+  updateMeasures = () => {
     let helper = {
       highest: -Infinity,
       lowest: Infinity,
@@ -59,17 +59,25 @@ export default class LandingPage extends Component<{}, State> {
   }
 
   // Grade add handler
-  handleGradeAdd = (newGrades: string) => {
+  updateGrades = (newGrades: string) => {
     const newGradeList = newGrades.split(',').map(n => parseFloat(n));
     this.setState({
       grades: [ ...this.state.grades, ...newGradeList.filter(n => !Number.isNaN(n)) ]
     })
   }
 
+  // Return an extended grades highlights object
+  getMeasuresObj() {
+    return {
+      name: this.state.name,
+      ...this.state.gradesHighlights
+    };
+  }
+
   componentDidUpdate(prevProps: {}, prevState: State) {
     // Update highlights state if grades changed
     if (prevState.grades !== this.state.grades) {
-      this.setHighlights();
+      this.updateMeasures();
     }
   }
 
@@ -81,7 +89,7 @@ export default class LandingPage extends Component<{}, State> {
           <div className="col-3">
             <TextInput.Delete
               label="Name"
-              onChange={debounce(this.handleNameChange, 400)}
+              onChange={debounce(this.updateName, 400)}
               onDeleteClick={this.resetName}
               inputRef={(ref: HTMLInputElement) => this.nameInputRef = ref} 
               nextInput={this.gradesInputRef} 
@@ -89,7 +97,7 @@ export default class LandingPage extends Component<{}, State> {
             />
             <TextInput.Add
               label="Grade(s)"
-              onAddClick={this.handleGradeAdd}
+              onAddClick={this.updateGrades}
               inputRef={(ref: HTMLInputElement) => this.gradesInputRef = ref} 
             />
           </div>
