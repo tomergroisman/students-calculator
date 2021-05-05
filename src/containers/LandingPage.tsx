@@ -102,7 +102,7 @@ export default class LandingPage extends Component<{}, State> {
             />
           </div>
           <div className="col-9">
-            <GradesWidget grades={this.state.grades} />
+            <GradesWidget gradesHighlights={this.state.gradesHighlights} />
           </div>
         </div>
         <Footer />
