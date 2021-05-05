@@ -42,19 +42,17 @@ export default class LandingPage extends Component<{}, State> {
         <Header name={this.state.name}/>
         <div className="row">
           <div className="col-3">
-            <TextInput
+            <TextInput.Delete
               label="Name"
               onChange={debounce(this.handleNameChange, 400)}
-              onClick={this.resetName}
-              clearTimeout
-              deleteButton
+              onDeleteClick={this.resetName}
               inputRef={(ref: HTMLInputElement) => this.nameInputRef = ref} 
               nextInput={this.gradesInputRef} 
+              clearTimeout
             />
-            <TextInput
+            <TextInput.Add
               label="Grade(s)"
-              addButton
-              onClick={this.handleGradeAdd}
+              onAddClick={this.handleGradeAdd}
               inputRef={(ref: HTMLInputElement) => this.gradesInputRef = ref} 
             />
           </div>
