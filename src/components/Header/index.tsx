@@ -18,7 +18,7 @@ export default function Header(props: Props) {
 
   return (
     <div>
-      <h1 className="display-1 text-center">Student Calculator</h1>
+      <h1 className="display-1 text-center mt-3">Student Calculator</h1>
       <Collapse in={!!name}>
         <h3 className="display-4 text-center">{`👋  Hi ${display}`}</h3>
       </Collapse>

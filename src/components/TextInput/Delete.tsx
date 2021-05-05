@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TextField, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { debounce, DebouncedFunc } from 'lodash';
@@ -16,7 +16,6 @@ export default function Delete(props: Props) {
   const { label, onDeleteClick, onChange, clearTimeout, inputRef, nextInput } = props;
   const [text, setText] = useState<string>("");
   const [showDeleteBtn, setShowDeleteBtn] = useState<boolean>(false);
-  const debouncedClearText = useRef<DebouncedFunc<() => void> | null>(null)
 
   // onChange handler
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,9 +31,8 @@ export default function Delete(props: Props) {
     setText("");
   }
 
-  // componentDidMount
-  useEffect(() => {
-    debouncedClearText.current = debounce(() => {
+  const debouncedClearText = useCallback<() => DebouncedFunc<() => void>>(() => {
+    return debounce(() => {
       clearText(setText);
       nextInput?.focus();
       setShowDeleteBtn(true);
@@ -44,12 +42,12 @@ export default function Delete(props: Props) {
   // Invoke debounced clear text
   useEffect(() => {
     if (clearTimeout && !!text) {
-      debouncedClearText.current && debouncedClearText.current()
+      debouncedClearText()();
     }
     else {
-      debouncedClearText.current && debouncedClearText.current.cancel();
+      debouncedClearText().cancel();
     }
-  }, [text, clearTimeout, debouncedClearText, nextInput])
+  }, [text, clearTimeout, debouncedClearText])
 
   return (
     <div className="root d-flex align-items-center justify-content-between">
