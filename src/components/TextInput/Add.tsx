@@ -34,6 +34,7 @@ export default function Add(props: Props) {
         inputRef={(ref: HTMLInputElement) => inputRef && inputRef(ref)}
         label={label}
         fullWidth
+        onKeyDown={(evt: React.KeyboardEvent) => evt.key === "Enter" && handleClick()}
         onChange={handleChange}
         className="me-1"
         value={text}
