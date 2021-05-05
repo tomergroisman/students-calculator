@@ -5,6 +5,7 @@ import GradesWidget from '../components/GradesWidget';
 import Header from '../components/Header';
 import TextInput from '../components/TextInput';
 import { Grades, GradesHighlights } from '../utils/types';
+import './LandingPage.scss';
 
 const FAILURE_GRADE = 60;
 
@@ -83,22 +84,22 @@ export default class LandingPage extends Component<{}, State> {
 
   render() {
     return (
-      <div className="container">
+      <div id="container" className="container">
         <Header name={this.state.name}/>
-        <div className="row">
+        <div id="content" className="row my-5">
           <div className="col-3">
             <TextInput.Delete
               label="Name"
               onChange={debounce(this.updateName, 400)}
               onDeleteClick={this.resetName}
-              inputRef={(ref: HTMLInputElement) => this.nameInputRef = ref} 
-              nextInput={this.gradesInputRef} 
+              inputRef={(ref: HTMLInputElement) => this.nameInputRef = ref}
+              nextInput={this.gradesInputRef}
               clearTimeout
             />
             <TextInput.Add
               label="Grade(s)"
               onAddClick={this.updateGrades}
-              inputRef={(ref: HTMLInputElement) => this.gradesInputRef = ref} 
+              inputRef={(ref: HTMLInputElement) => this.gradesInputRef = ref}
             />
           </div>
           <div className="col-9">
