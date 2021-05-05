@@ -1,6 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-export default function GradesWidget() {
+interface Props {
+  grades: number[],
+}
+
+export default function GradesWidget(props: Props) {
   return (
     <div>
       <h1>GradesWidget</h1>

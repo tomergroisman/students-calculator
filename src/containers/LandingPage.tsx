@@ -4,17 +4,21 @@ import Footer from '../components/Footer';
 import GradesWidget from '../components/GradesWidget';
 import Header from '../components/Header';
 import TextInput from '../components/TextInput';
-import { Grades } from '../utils/types';
+import { Grades, GradesHighlights } from '../utils/types';
+
+const FAILURE_GRADE = 60;
 
 interface State {
   name: string,
   grades: Grades,
+  gradesHighlights: GradesHighlights | null
 }
 
 export default class LandingPage extends Component<{}, State> {
   state: State = {
     name: "",
-    grades: []
+    grades: [],
+    gradesHighlights: null
   }
   nameInputRef?: HTMLInputElement;
   gradesInputRef?: HTMLInputElement;
@@ -30,10 +34,43 @@ export default class LandingPage extends Component<{}, State> {
     this.nameInputRef?.focus();
   }
 
+  // Set the grade highlights relative to the current grade state
+  setHighlights = () => {
+    let helper = {
+      highest: -Infinity,
+      lowest: Infinity,
+      failure: 0,
+      sum: 0
+    }
+    this.state.grades.forEach(grade => {
+      helper.highest = Math.max(helper.highest, grade);
+      helper.lowest = Math.min(helper.lowest, grade);
+      grade < FAILURE_GRADE && helper.failure++;
+      helper.sum += grade;
+    });
+    this.setState({
+      gradesHighlights: {
+        highest: helper.highest,
+        lowest: helper.lowest,
+        failures: helper.failure,
+        avg: helper.sum / this.state.grades.length
+      }
+    })
+  }
+
   // Grade add handler
   handleGradeAdd = (newGrades: string) => {
     const newGradeList = newGrades.split(',').map(n => parseFloat(n));
-    this.setState({ grades: [ ...this.state.grades, ...newGradeList ]})
+    this.setState({
+      grades: [ ...this.state.grades, ...newGradeList.filter(n => !Number.isNaN(n)) ]
+    })
+  }
+
+  componentDidUpdate(prevProps: {}, prevState: State) {
+    // Update highlights state if grades changed
+    if (prevState.grades !== this.state.grades) {
+      this.setHighlights();
+    }
   }
 
   render() {
@@ -57,7 +94,7 @@ export default class LandingPage extends Component<{}, State> {
             />
           </div>
           <div className="col-9">
-            <GradesWidget />
+            <GradesWidget grades={this.state.grades} />
           </div>
         </div>
         <Footer />
