@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { TextField, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { debounce, DebouncedFunc } from 'lodash';
@@ -31,23 +31,22 @@ export default function Delete(props: Props) {
     setText("");
   }
 
-  const debouncedClearText = useCallback<() => DebouncedFunc<() => void>>(() => {
-    return debounce(() => {
+  const debouncedClearText = useMemo<DebouncedFunc<() => void>>(() => 
+    debounce(() => {
       clearText(setText);
       nextInput?.focus();
       setShowDeleteBtn(true);
-    }, 2500);
-  }, [nextInput])
+    }, 2000), [nextInput]);
 
   // Invoke debounced clear text
   useEffect(() => {
     if (clearTimeout && !!text) {
-      debouncedClearText()();
+      debouncedClearText();
     }
     else {
-      debouncedClearText().cancel();
+      debouncedClearText.cancel()
     }
-  }, [text, clearTimeout, debouncedClearText])
+  }, [text, clearTimeout, debouncedClearText, nextInput])
 
   return (
     <div className="root d-flex align-items-center justify-content-between">

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { debounce } from 'lodash';
 import Footer from '../components/Footer';
 import GradesWidget from '../components/GradesWidget';
@@ -12,17 +12,17 @@ const FAILURE_GRADE = 60;
 interface State {
   name: string,
   grades: Grades,
-  gradesHighlights: GradesHighlights | null
+  gradesHighlights: GradesHighlights | null,
+  gradesInputRef?: HTMLInputElement
 }
 
-export default class LandingPage extends Component<{}, State> {
+export default class LandingPage extends PureComponent<{}, State> {
   state: State = {
     name: "",
     grades: [],
     gradesHighlights: null
   }
   nameInputRef?: HTMLInputElement;
-  gradesInputRef?: HTMLInputElement;
 
   // Name change handler
   updateName = (name: string) => {
@@ -93,13 +93,13 @@ export default class LandingPage extends Component<{}, State> {
               onChange={debounce(this.updateName, 400)}
               onDeleteClick={this.resetName}
               inputRef={(ref: HTMLInputElement) => this.nameInputRef = ref}
-              nextInput={this.gradesInputRef}
+              nextInput={this.state.gradesInputRef}
               clearTimeout
             />
             <TextInput.Add
               label="Grade(s)"
               onAddClick={this.updateGrades}
-              inputRef={(ref: HTMLInputElement) => this.gradesInputRef = ref}
+              inputRef={(ref: HTMLInputElement) => this.setState({ gradesInputRef: ref })}
             />
           </div>
           <div className="col-9">
