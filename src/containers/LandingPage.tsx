@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { debounce } from 'lodash';
+import { debounce, cloneDeep } from 'lodash';
 import Footer from '../components/Footer';
 import GradesWidget from '../components/GradesWidget';
 import Header from '../components/Header';
 import TextInput from '../components/TextInput';
 import { Grades, GradesHighlights } from '../utils/types';
-import './LandingPage.scss';
 import {gradesValidationRules} from '../utils/validation';
+import './LandingPage.scss';
 
 const FAILURE_GRADE = 60;
 
@@ -38,6 +38,11 @@ export default class LandingPage extends PureComponent<{}, State> {
 
   // Set the grade highlights relative to the current grade state
   updateMeasures = () => {
+    if (this.state.grades.length === 0) {
+      this.setState({ gradesHighlights: null });
+      return;
+    }
+    
     let helper = {
       highest: -Infinity,
       lowest: Infinity,
@@ -60,12 +65,19 @@ export default class LandingPage extends PureComponent<{}, State> {
     })
   }
 
-  // Grade add handler
-  updateGrades = (newGrades: string) => {
-    const newGradeList = newGrades.split(',').map(n => parseFloat(n));
-    this.setState({
-      grades: [ ...this.state.grades, ...newGradeList ]
-    })
+  // Grade update handlers
+  updateGrades = {
+    add: (newGrades: string) => {
+      const newGradeList = newGrades.split(',').map(n => parseFloat(n));
+      this.setState({
+        grades: [ ...cloneDeep(this.state.grades), ...newGradeList ]
+      })
+    },
+    delete: (idx: number) => {
+      const newGradeList = cloneDeep(this.state.grades);
+      newGradeList.splice(idx, 1);
+      this.setState({ grades: newGradeList })
+    }
   }
 
   // Return an extended grades highlights object
@@ -99,13 +111,17 @@ export default class LandingPage extends PureComponent<{}, State> {
             />
             <TextInput.Add
               label="Grade(s)"
-              onAddClick={this.updateGrades}
+              onAddClick={this.updateGrades.add}
               inputRef={(ref: HTMLInputElement) => this.setState({ gradesInputRef: ref })}
               validationRules={gradesValidationRules}
             />
           </div>
           <div className="col-9">
-            <GradesWidget gradesHighlights={this.state.gradesHighlights} />
+            <GradesWidget
+              grades={this.state.grades}
+              gradesHighlights={this.state.gradesHighlights}
+              onDeleteGrade={this.updateGrades.delete}
+            />
           </div>
         </div>
         <Footer />
