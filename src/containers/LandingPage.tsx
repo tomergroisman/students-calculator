@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import TextInput from '../components/TextInput';
 import { Grades, GradesHighlights } from '../utils/types';
 import './LandingPage.scss';
+import {gradesValidationRules} from '../utils/validation';
 
 const FAILURE_GRADE = 60;
 
@@ -63,7 +64,7 @@ export default class LandingPage extends PureComponent<{}, State> {
   updateGrades = (newGrades: string) => {
     const newGradeList = newGrades.split(',').map(n => parseFloat(n));
     this.setState({
-      grades: [ ...this.state.grades, ...newGradeList.filter(n => !Number.isNaN(n)) ]
+      grades: [ ...this.state.grades, ...newGradeList ]
     })
   }
 
@@ -100,6 +101,7 @@ export default class LandingPage extends PureComponent<{}, State> {
               label="Grade(s)"
               onAddClick={this.updateGrades}
               inputRef={(ref: HTMLInputElement) => this.setState({ gradesInputRef: ref })}
+              validationRules={gradesValidationRules}
             />
           </div>
           <div className="col-9">
