@@ -8,7 +8,7 @@ interface Props {
   label: string,
   onChange?: (value: string) => void,
   onDeleteClick?: (newGrades: string) => void,
-  clearTimeout?: boolean,
+  clearTimeout?: number,
   inputRef?: (ref: HTMLInputElement) => void
   nextInput?: HTMLInputElement
 }
@@ -36,7 +36,7 @@ export default function Delete(props: Props) {
       clearText(setText);
       nextInput?.focus();
       setShowDeleteBtn(true);
-    }, 2000), [nextInput]);
+    }, clearTimeout), [clearTimeout, nextInput]);
 
   // Invoke debounced clear text
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function Delete(props: Props) {
       />
       {showDeleteBtn &&
         <IconButton
-          className="ms-1"
+          className="action-icon ms-1"
           onClick={handleClick}
           size="small"
         >

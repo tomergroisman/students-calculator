@@ -1,5 +1,6 @@
 import Add from './Add';
 import Delete from './Delete';
+import './TextInput.scss';
 
 /**
  * Clear the displayed text

@@ -74,7 +74,7 @@ export default function Add(props: Props) {
         onBlur={reset}
       />
       <IconButton
-        className="ms-1"
+        className="action-icon ms-1"
         onClick={handleClick}
         size="small"
       >

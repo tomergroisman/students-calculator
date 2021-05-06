@@ -42,7 +42,7 @@ export default class LandingPage extends PureComponent<{}, State> {
       this.setState({ gradesHighlights: null });
       return;
     }
-    
+
     let helper = {
       highest: -Infinity,
       lowest: Infinity,
@@ -107,7 +107,7 @@ export default class LandingPage extends PureComponent<{}, State> {
               onDeleteClick={this.resetName}
               inputRef={(ref: HTMLInputElement) => this.nameInputRef = ref}
               nextInput={this.state.gradesInputRef}
-              clearTimeout
+              clearTimeout={3000}
             />
             <TextInput.Add
               label="Grade(s)"
