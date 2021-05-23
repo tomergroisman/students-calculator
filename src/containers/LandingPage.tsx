@@ -103,7 +103,7 @@ export default class LandingPage extends PureComponent<{}, State> {
           <div className="col-3">
             <TextInput.Delete
               label="Name"
-              onChange={debounce(this.updateName, 400)}
+              onChange={debounce(this.updateName, 600)}
               onDeleteClick={this.resetName}
               inputRef={(ref: HTMLInputElement) => this.nameInputRef = ref}
               nextInput={this.state.gradesInputRef}
