@@ -2,7 +2,7 @@
 
 ## Description
 
-This project implements a student grades calculator.\
+This project implements a student grades calculator.
 
 ### Features
 
