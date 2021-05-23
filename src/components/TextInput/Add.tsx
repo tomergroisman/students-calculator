@@ -33,7 +33,7 @@ export default function Add(props: Props) {
     }
     onAddClick && onAddClick(text);
     clearText(setText);
-    setContinuesValidation(false)
+    reset();
   }
 
   // Reset component state
@@ -71,7 +71,6 @@ export default function Add(props: Props) {
         value={text}
         error={!!error}
         helperText={error}
-        onBlur={reset}
       />
       <IconButton
         className="action-icon ms-1"
