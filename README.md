@@ -11,6 +11,7 @@ This project implements a student grades calculator.
 3. Add new grade by hitting the Enter/Return key.
 4. Grades can be deleted if hovered.
 5. Calculator fade in and out effects after the first grade was entered/ the last grade was deleted.
+6. Text input validations
 
 ## Run
 
